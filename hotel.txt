@@ -1,0 +1,144 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.7
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:8889
+-- Generation Time: Jan 13, 2021 at 05:49 PM
+-- Server version: 5.7.32
+-- PHP Version: 7.4.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `db-hotel`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookings`
+--
+
+CREATE TABLE `bookings` (
+  `b_id` int(11) NOT NULL,
+  `b_room` tinyint(11) NOT NULL,
+  `b_guests_number` tinyint(4) NOT NULL,
+  `b_check-in` date NOT NULL,
+  `b_check-out` date NOT NULL,
+  `b_number_of_nights` tinyint(4) NOT NULL,
+  `b_payment_method` varchar(50) NOT NULL,
+  `b_total_price` decimal(8,2) NOT NULL,
+  `b_paid_amount` decimal(8,2) NOT NULL,
+  `b_guest_01` int(11) NOT NULL,
+  `b_guest_02` int(11) DEFAULT NULL,
+  `b_guest_03` int(11) DEFAULT NULL,
+  `b_guest_04` int(11) DEFAULT NULL,
+  `b_guest_05` int(11) DEFAULT NULL,
+  `b_guest_06` int(11) DEFAULT NULL,
+  `b_extra_info` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `guests`
+--
+
+CREATE TABLE `guests` (
+  `guest_id` int(4) NOT NULL,
+  `guest_first_name` varchar(50) NOT NULL,
+  `guest_last_name` varchar(50) NOT NULL,
+  `guest_birth_date` date NOT NULL,
+  `guest_email` varchar(50) NOT NULL,
+  `guest_phone_number` int(11) NOT NULL,
+  `guest_document_type` varchar(50) NOT NULL,
+  `guest_document_number` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rooms`
+--
+
+CREATE TABLE `rooms` (
+  `room_id` tinyint(4) NOT NULL,
+  `room_name` varchar(20) NOT NULL,
+  `room_max_guests` tinyint(4) NOT NULL DEFAULT '2',
+  `room_beds` varchar(50) NOT NULL DEFAULT '1 queen bed or 2 twin beds',
+  `room_m2` tinyint(4) DEFAULT NULL,
+  `room_bathroom` varchar(50) NOT NULL DEFAULT 'Attached bathroom',
+  `room_min_price` decimal(8,2) NOT NULL,
+  `room_price_per_person` decimal(8,2) NOT NULL,
+  `room_air-conditioning` tinyint(1) NOT NULL DEFAULT '1',
+  `room_extra_info` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD PRIMARY KEY (`b_id`),
+  ADD KEY `guest-01` (`b_guest_01`),
+  ADD KEY `guest-02` (`b_guest_02`),
+  ADD KEY `guest-03` (`b_guest_03`),
+  ADD KEY `guest-04` (`b_guest_04`),
+  ADD KEY `guest-05` (`b_guest_05`),
+  ADD KEY `guest-06` (`b_guest_06`),
+  ADD KEY `room` (`b_room`);
+
+--
+-- Indexes for table `guests`
+--
+ALTER TABLE `guests`
+  ADD PRIMARY KEY (`guest_id`);
+
+--
+-- Indexes for table `rooms`
+--
+ALTER TABLE `rooms`
+  ADD PRIMARY KEY (`room_id`),
+  ADD UNIQUE KEY `room_name` (`room_name`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `bookings`
+--
+ALTER TABLE `bookings`
+  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `guests`
+--
+ALTER TABLE `guests`
+  MODIFY `guest_id` int(4) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `rooms`
+--
+ALTER TABLE `rooms`
+  MODIFY `room_id` tinyint(4) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD CONSTRAINT `guest-01` FOREIGN KEY (`b_guest_01`) REFERENCES `guests` (`guest_id`),
+  ADD CONSTRAINT `guest-02` FOREIGN KEY (`b_guest_02`) REFERENCES `guests` (`guest_id`),
+  ADD CONSTRAINT `guest-03` FOREIGN KEY (`b_guest_03`) REFERENCES `guests` (`guest_id`),
+  ADD CONSTRAINT `guest-04` FOREIGN KEY (`b_guest_04`) REFERENCES `guests` (`guest_id`),
+  ADD CONSTRAINT `guest-05` FOREIGN KEY (`b_guest_05`) REFERENCES `guests` (`guest_id`),
+  ADD CONSTRAINT `guest-06` FOREIGN KEY (`b_guest_06`) REFERENCES `guests` (`guest_id`),
+  ADD CONSTRAINT `room` FOREIGN KEY (`b_room`) REFERENCES `rooms` (`room_id`);
